@@ -11,22 +11,33 @@ public class JibJab {
 
         while (true) {
             String userInput = sc.nextLine();
+            String[] split = userInput.split(" ");
+            String firstWord = split[0];
 
-            if (userInput.equals("bye")) {
+            if (firstWord.equals("bye")) {
                 System.out.println("Bye. Hope to see you again soon!");
                 return;
-            } else if (userInput.equals("list")) {
+            } else if (firstWord.equals("list")) {
                 int counter = 1;
 
                 for (Task task: userTasks) {
-                    System.out.println(counter + ".[" + task.getStatusIcon() + "] " + task.getTaskName());
+                    System.out.println(counter + ". " + task.toString());
                     counter++;
                 }
+            } else if (firstWord.equals("mark")) {
+                int idx = Integer.parseInt(split[1]) - 1;
+                Task toMark = userTasks.get(idx);
+                toMark.setDone();
+                System.out.println("Nice! I've marked this task as done:\n\t" + toMark.toString());
+            } else if (firstWord.equals("unmark")) {
+                int idx = Integer.parseInt(split[1]) - 1;
+                Task toUnmark = userTasks.get(idx);
+                toUnmark.setNotDone();
+                System.out.println("OK, I've marked this task as not done yet:\n\t" + toUnmark.toString());
             } else {
                 userTasks.add(new Task(userInput));
                 System.out.println("Added: " + userInput);
             }
         }
-
     }
 }
