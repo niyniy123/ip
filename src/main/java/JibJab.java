@@ -19,7 +19,7 @@ public class JibJab {
                 int counter = 1;
 
                 for (Task task: userTasks) {
-                    System.out.println(counter + ". " + task.getTaskName());
+                    System.out.println(counter + ".[" + task.getStatusIcon() + "] " + task.getTaskName());
                     counter++;
                 }
             } else {
