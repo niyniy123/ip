@@ -14,7 +14,8 @@ public class JibJab {
                 System.out.println("Bye. Hope to see you again soon!");
                 return;
             } else {
-                System.out.println(userInput);
+                userInputs.add(userInput);
+                System.out.println("Added: " + userInput);
             }
         }
 
