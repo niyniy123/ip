@@ -14,4 +14,8 @@ public class Task {
     public void setNotDone() {
         this.isDone = false;
     }
+
+    public String getTaskName() {
+        return taskName;
+    }
 }
