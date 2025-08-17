@@ -13,6 +13,13 @@ public class JibJab {
             if (userInput.equals("bye")) {
                 System.out.println("Bye. Hope to see you again soon!");
                 return;
+            } else if (userInput.equals("list")) {
+                int counter = 1;
+
+                for (String input : userInputs) {
+                    System.out.println(counter + ". " + input);
+                    counter++;
+                }
             } else {
                 userInputs.add(userInput);
                 System.out.println("Added: " + userInput);
