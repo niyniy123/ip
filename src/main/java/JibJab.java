@@ -15,6 +15,14 @@ public class JibJab {
         System.out.println("Now you have " + this.tasks.size() + " tasks in the list");
     }
 
+    public void deleteTask(int idx) {
+        Task task =  this.tasks.get(idx);
+        this.tasks.remove(task);
+        System.out.println("Noted. I've removed this task:");
+        System.out.println(task);
+        System.out.println("Now you have " + this.tasks.size() + " tasks in the list");
+    }
+
     public void markTaskAsDone(int idx) {
         Task task = this.tasks.get(idx);
         task.setDone();
@@ -74,6 +82,9 @@ public class JibJab {
                 } else if (firstWord.equals("unmark")) {
                     int idx = Integer.parseInt(split[1]) - 1;
                     jj.markTaskAsNotDone(idx);
+                } else if (firstWord.equals("delete")) {
+                    int idx =  Integer.parseInt(split[1]) - 1;
+                    jj.deleteTask(idx);
                 } else {
                     throw new JibJabException("I don't understand this command");
                 }
