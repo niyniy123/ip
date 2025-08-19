@@ -44,7 +44,7 @@ public class JibJab {
         System.out.println("Hello from JibJab");
         System.out.println("What can I do for you?");
 
-        while (true) {
+        while (sc.hasNextLine()) {
             String userInput = sc.nextLine();
             String[] split = userInput.split(" ", 2);
             String firstWord = split[0];
