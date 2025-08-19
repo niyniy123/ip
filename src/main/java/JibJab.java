@@ -18,18 +18,18 @@ public class JibJab {
     public void markTaskAsDone(int idx) {
         Task task = this.tasks.get(idx);
         task.setDone();
-        System.out.println("Nice! I've marked this task as done:\n\t" + task);
+        System.out.println("Nice! I've marked this task as done:\n" + task);
     }
 
     public void markTaskAsNotDone(int idx) {
         Task task = this.tasks.get(idx);
         task.setNotDone();
-        System.out.println("OK, I've marked this task as not done yet:\n\t" + task);
+        System.out.println("OK, I've marked this task as not done yet:\n" + task);
     }
 
     public void listTasks() {
         int counter = 1;
-        System.out.println("Here are the tasks in your list: ");
+        System.out.println("Here are the tasks in your list:");
         for (Task task : this.tasks) {
             System.out.println(task);
             counter++;
