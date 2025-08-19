@@ -49,26 +49,36 @@ public class JibJab {
             String[] split = userInput.split(" ", 2);
             String firstWord = split[0];
 
-            if (firstWord.equals("bye")) {
-                System.out.println("Bye. Hope to see you again soon!");
-                return;
-            } else if (firstWord.equals("todo")) {
-                jj.addTask(new ToDo(split[1]));
-            } else if (firstWord.equals("deadline")) {
-                String[] deadlineTask = split[1].split(" /by ");
-                jj.addTask(new Deadline(deadlineTask[0], deadlineTask[1]));
-            } else if (firstWord.equals("event")) {
-                String[] eventTask = split[1].split(" /from ");
-                String[] fromTo =  eventTask[1].split(" /to ");
-                jj.addTask(new Event(eventTask[0], fromTo[0], fromTo[1]));
-            } else if (firstWord.equals("list")) {
-                jj.listTasks();
-            } else if (firstWord.equals("mark")) {
-                int idx = Integer.parseInt(split[1]) - 1;
-                jj.markTaskAsDone(idx);
-            } else if (firstWord.equals("unmark")) {
-                int idx = Integer.parseInt(split[1]) - 1;
-                jj.markTaskAsNotDone(idx);
+            try {
+                if (firstWord.equals("bye")) {
+                    System.out.println("Bye. Hope to see you again soon!");
+                    return;
+                } else if (firstWord.equals("todo")) {
+                    try {
+                        jj.addTask(new ToDo(split[1]));
+                    } catch (ArrayIndexOutOfBoundsException e) {
+                        throw new JibJabException("You need to enter a task description");
+                    }
+                } else if (firstWord.equals("deadline")) {
+                    String[] deadlineTask = split[1].split(" /by ");
+                    jj.addTask(new Deadline(deadlineTask[0], deadlineTask[1]));
+                } else if (firstWord.equals("event")) {
+                    String[] eventTask = split[1].split(" /from ");
+                    String[] fromTo = eventTask[1].split(" /to ");
+                    jj.addTask(new Event(eventTask[0], fromTo[0], fromTo[1]));
+                } else if (firstWord.equals("list")) {
+                    jj.listTasks();
+                } else if (firstWord.equals("mark")) {
+                    int idx = Integer.parseInt(split[1]) - 1;
+                    jj.markTaskAsDone(idx);
+                } else if (firstWord.equals("unmark")) {
+                    int idx = Integer.parseInt(split[1]) - 1;
+                    jj.markTaskAsNotDone(idx);
+                } else {
+                    throw new JibJabException("I don't understand this command");
+                }
+            } catch (JibJabException e) {
+                System.err.println(e.getMessage());
             }
         }
     }
