@@ -23,14 +23,14 @@ public class Storage {
         }
     }
 
-    public ArrayList<Task> loadTasks() {
+    public ArrayList<Task> loadTasks() throws JibJabException{
         ArrayList<Task> tasks = new ArrayList<Task>();
         File file = new File(this.filePath);
         if (file.exists()) {
             try {
                 sc = new Scanner(file);
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
+            } catch (IOException e) {
+                throw new JibJabException("Failed to load from file!");
             }
 
             while (sc.hasNextLine()) {
