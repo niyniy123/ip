@@ -23,8 +23,8 @@ public class Storage {
         }
     }
 
-    public TaskList loadTasks() {
-        TaskList tasks = new TaskList();
+    public ArrayList<Task> loadTasks() {
+        ArrayList<Task> tasks = new ArrayList<Task>();
         File file = new File(this.filePath);
         if (file.exists()) {
             try {
@@ -44,7 +44,7 @@ public class Storage {
                     if (taskStatus.equals("X")) {
                         task.setDone();
                     }
-                    tasks.addTask(task);
+                    tasks.add(task);
                 } else if (taskType.equals("D")) {
 
                     String[] split = taskDesc.split(" \\(by: ");
@@ -53,7 +53,7 @@ public class Storage {
                     if (taskStatus.equals("X")) {
                         task.setDone();
                     }
-                    tasks.addTask(task);
+                    tasks.add(task);
                 } else if (taskType.equals("E")) {
                     String[] split = taskDesc.split(" \\(from: ");
                     String[] fromTo = split[1].split(" to: ");
@@ -63,7 +63,7 @@ public class Storage {
                     if (taskStatus.equals("X")) {
                         task.setDone();
                     }
-                    tasks.addTask(task);
+                    tasks.add(task);
                 } else {
                     System.err.println("Unknown task type: " + taskType);
                 }

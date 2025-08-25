@@ -17,7 +17,7 @@ public class JibJab {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
         Storage storage = new Storage("data/jibjab.txt");
-        TaskList tl = storage.loadTasks();
+        TaskList tl = new TaskList(storage.loadTasks());
 
         System.out.println("Hello from JibJab");
         System.out.println("What can I do for you?");
