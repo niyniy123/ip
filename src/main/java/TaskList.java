@@ -33,13 +33,18 @@ public class TaskList {
         System.out.println("OK, I've marked this task as not done yet:\n" + task);
     }
 
-    public void listTasks() {
+    public String toString() {
         int counter = 1;
-        System.out.println("Here are the tasks in your list:");
+        StringBuilder sb = new StringBuilder();
+        //System.out.println("Here are the tasks in your list:");
         for (Task task : this.tasks) {
-            System.out.println(task);
+            sb.append(task).append("\n");
             counter++;
         }
+        sb.setLength(sb.length() - 1);
+        return sb.toString();
     }
+
+
 
 }

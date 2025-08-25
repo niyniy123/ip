@@ -13,72 +13,11 @@ public class JibJab {
     public JibJab() {
     }
 
-//    public void saveTasks() {
-//        try {
-//            PrintWriter pw = new PrintWriter("data/jibjab.txt");
-//            for (Task task : this.tasks) {
-//                pw.println(task.toString());
-//            }
-//            pw.close();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//    }
-
-//    public void loadTasks() {
-//        String path = "data/jibjab.txt";
-//        File file = new File(path);
-//        if (file.exists()) {
-//            try {
-//                sc = new Scanner(file);
-//            } catch (FileNotFoundException e) {
-//                e.printStackTrace();
-//            }
-//
-//            while (sc.hasNextLine()) {
-//                String line = sc.nextLine();
-//                String taskType = Character.toString(line.charAt(1));
-//                String taskStatus =  Character.toString(line.charAt(4));
-//                String taskDesc = line.substring(7);
-//
-//                if (taskType.equals("T")) {
-//                    ToDo task = new ToDo(taskDesc);
-//                    if (taskStatus.equals("X")) {
-//                        task.setDone();
-//                    }
-//                    this.tasks.add(task);
-//                } else if (taskType.equals("D")) {
-//
-//                    String[] split = taskDesc.split(" \\(by: ");
-//                    String taskBy = split[1].substring(0, split[1].indexOf(")"));
-//                    Deadline task = new Deadline(split[0], taskBy);
-//                    if (taskStatus.equals("X")) {
-//                        task.setDone();
-//                    }
-//                    this.tasks.add(task);
-//                } else if (taskType.equals("E")) {
-//                    String[] split = taskDesc.split(" \\(from: ");
-//                    String[] fromTo = split[1].split(" to: ");
-//                    String from = fromTo[0];
-//                    String to = fromTo[1].substring(0, fromTo[1].indexOf(")"));
-//                    Event task = new Event(split[0], from, to);
-//                    if (taskStatus.equals("X")) {
-//                        task.setDone();
-//                    }
-//                    this.tasks.add(task);
-//                } else {
-//                    System.err.println("Unknown task type: " + taskType);
-//                }
-//            }
-//        }
-//    }
-
-
 
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
-        JibJab jj = new JibJab();
-        TaskList tl = new TaskList();
+        Storage storage = new Storage("data/jibjab.txt");
+        TaskList tl = storage.loadTasks();
 
         System.out.println("Hello from JibJab");
         System.out.println("What can I do for you?");
@@ -90,7 +29,7 @@ public class JibJab {
 
             try {
                 if (firstWord.equals("bye")) {
-                    //jj.saveTasks();
+                    storage.saveTasks(tl);
                     System.out.println("Bye. Hope to see you again soon!");
                     return;
                 } else if (firstWord.equals("todo")) {
@@ -107,7 +46,7 @@ public class JibJab {
                     String[] fromTo = eventTask[1].split(" /to ");
                     tl.addTask(new Event(eventTask[0], fromTo[0], fromTo[1]));
                 } else if (firstWord.equals("list")) {
-                    tl.listTasks();
+                    System.out.println(tl);
                 } else if (firstWord.equals("mark")) {
                     int idx = Integer.parseInt(split[1]) - 1;
                     tl.markTaskAsDone(idx);
