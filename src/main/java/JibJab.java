@@ -1,67 +1,70 @@
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.Scanner;
-
 public class JibJab {
-    private Scanner sc;
+    private Storage storage;
+    private TaskList tasks;
+    private Ui ui;
 
 
-    public JibJab() {
+    public JibJab(String filePath) {
+       ui = new Ui();
+       storage = new Storage(filePath);
+       try {
+           tasks = new TaskList(storage.loadTasks());
+       } catch (JibJabException e) {
+           ui.showLoadingError();
+           tasks = new TaskList();
+       }
+
     }
 
-
-    public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
-        Storage storage = new Storage("data/jibjab.txt");
-        TaskList tl = new TaskList(storage.loadTasks());
-
-        System.out.println("Hello from JibJab");
-        System.out.println("What can I do for you?");
-
-        while (sc.hasNextLine()) {
-            String userInput = sc.nextLine();
-            String[] split = userInput.split(" ", 2);
-            String firstWord = split[0];
-
+    public void run() {
+        ui.showWelcome();
+        boolean isExit = false;
+        while (!isExit) {
             try {
-                if (firstWord.equals("bye")) {
-                    storage.saveTasks(tl);
-                    System.out.println("Bye. Hope to see you again soon!");
-                    return;
-                } else if (firstWord.equals("todo")) {
-                    try {
-                        tl.addTask(new ToDo(split[1]));
-                    } catch (ArrayIndexOutOfBoundsException e) {
-                        throw new JibJabException("You need to enter a task description");
-                    }
-                } else if (firstWord.equals("deadline")) {
-                    String[] deadlineTask = split[1].split(" /by ");
-                    tl.addTask(new Deadline(deadlineTask[0], deadlineTask[1]));
-                } else if (firstWord.equals("event")) {
-                    String[] eventTask = split[1].split(" /from ");
-                    String[] fromTo = eventTask[1].split(" /to ");
-                    tl.addTask(new Event(eventTask[0], fromTo[0], fromTo[1]));
-                } else if (firstWord.equals("list")) {
-                    System.out.println(tl);
-                } else if (firstWord.equals("mark")) {
-                    int idx = Integer.parseInt(split[1]) - 1;
-                    tl.markTaskAsDone(idx);
-                } else if (firstWord.equals("unmark")) {
-                    int idx = Integer.parseInt(split[1]) - 1;
-                    tl.markTaskAsNotDone(idx);
-                } else if (firstWord.equals("delete")) {
-                    int idx =  Integer.parseInt(split[1]) - 1;
-                    tl.deleteTask(idx);
-                } else {
+                String fullCommand = ui.readCommand();
+                ui.showLine();
+                String[] command = Parser.parseCommand(fullCommand);
+                switch (command[0]) {
+                case "bye":
+                    storage.saveTasks(tasks);
+                    isExit = true;
+                    break;
+                case "todo":
+                    String taskDesc = Parser.parseToDo(command);
+                    tasks.addTask(new ToDo(taskDesc));
+                    break;
+                case "deadline":
+                    String[] deadlineDetails = Parser.parseDeadline(command[1]);
+                    tasks.addTask(new Deadline(deadlineDetails[0], deadlineDetails[1]));
+                    break;
+                case "event":
+                    String[] eventDetails = Parser.parseEvent(command[1]);
+                    tasks.addTask(new Event(eventDetails[0], eventDetails[1], eventDetails[2]));
+                    break;
+                case "list":
+                    System.out.println(tasks);
+                    break;
+                case "mark":
+                    tasks.markTaskAsDone(Parser.parseIndex(command[1]));
+                    break;
+                case "unmark":
+                    tasks.markTaskAsNotDone(Parser.parseIndex(command[1]));
+                    break;
+                case "delete":
+                    tasks.deleteTask(Parser.parseIndex(command[1]));
+                    break;
+                default:
                     throw new JibJabException("I don't understand this command");
                 }
             } catch (JibJabException e) {
-                System.err.println(e.getMessage());
+                ui.showError(e.getMessage());
+            } finally {
+                ui.showLine();
             }
         }
+    }
+
+    public static void main(String[] args) {
+        new JibJab("data/jibjab.txt").run();
     }
 }
