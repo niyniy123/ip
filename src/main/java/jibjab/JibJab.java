@@ -29,6 +29,7 @@ public class JibJab {
                 switch (command[0]) {
                 case "bye":
                     storage.saveTasks(tasks);
+                    ui.showGoodbye();
                     isExit = true;
                     break;
                 case "todo":
