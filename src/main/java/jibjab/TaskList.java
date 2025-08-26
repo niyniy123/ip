@@ -1,3 +1,5 @@
+package jibjab;
+
 import java.util.ArrayList;
 
 public class TaskList {
@@ -49,7 +51,5 @@ public class TaskList {
         sb.setLength(sb.length() - 1);
         return sb.toString();
     }
-
-
 
 }

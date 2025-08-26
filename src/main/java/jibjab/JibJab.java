@@ -1,3 +1,5 @@
+package jibjab;
+
 public class JibJab {
     private Storage storage;
     private TaskList tasks;
