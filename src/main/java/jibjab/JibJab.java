@@ -47,6 +47,10 @@ public class JibJab {
                 case "list":
                     System.out.println(tasks);
                     break;
+                case "find":
+                    String keyword = command[1];
+                    System.out.println(tasks.findTasks(keyword));
+                    break;
                 case "mark":
                     tasks.markTaskAsDone(Parser.parseIndex(command[1]));
                     break;
