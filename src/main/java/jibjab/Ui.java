@@ -4,6 +4,7 @@ import java.util.Scanner;
 
 public class Ui {
     private Scanner input;
+
     public Ui() {
         this.input = new Scanner(System.in);
     }
@@ -22,7 +23,7 @@ public class Ui {
     }
 
     public String readCommand() {
-        if  (input.hasNextLine()) {
+        if (input.hasNextLine()) {
             return input.nextLine();
         }
         return "";

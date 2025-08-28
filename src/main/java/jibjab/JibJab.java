@@ -7,15 +7,19 @@ public class JibJab {
 
 
     public JibJab(String filePath) {
-       ui = new Ui();
-       storage = new Storage(filePath);
-       try {
-           tasks = new TaskList(storage.loadTasks());
-       } catch (JibJabException e) {
-           ui.showLoadingError();
-           tasks = new TaskList();
-       }
+        ui = new Ui();
+        storage = new Storage(filePath);
+        try {
+            tasks = new TaskList(storage.loadTasks());
+        } catch (JibJabException e) {
+            ui.showLoadingError();
+            tasks = new TaskList();
+        }
 
+    }
+
+    public static void main(String[] args) {
+        new JibJab("data/jibjab.txt").run();
     }
 
     public void run() {
@@ -65,9 +69,5 @@ public class JibJab {
                 ui.showLine();
             }
         }
-    }
-
-    public static void main(String[] args) {
-        new JibJab("data/jibjab.txt").run();
     }
 }
