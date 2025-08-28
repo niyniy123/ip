@@ -14,13 +14,16 @@ public class Storage {
         this.filePath = filePath;
     }
 
-    public void saveTasks(TaskList tasks) {
+    public void saveTasks(TaskList tasks) throws JibJabException {
+        if (tasks.isEmpty()) {
+            return;
+        }
         try {
             PrintWriter pw = new PrintWriter(this.filePath);
             pw.print(tasks);
             pw.close();
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new JibJabException(e.getMessage() + "\nEnsure the data folder is present");
         }
     }
 

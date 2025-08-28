@@ -13,6 +13,10 @@ public class TaskList {
         this.tasks = tasks;
     }
 
+    public boolean isEmpty() {
+        return this.tasks.isEmpty();
+    }
+
     public void addTask(Task task) {
         this.tasks.add(task);
         System.out.println("Got it. I've added this task:");
@@ -41,15 +45,20 @@ public class TaskList {
     }
 
     public String toString() {
-        int counter = 1;
-        StringBuilder sb = new StringBuilder();
-        //System.out.println("Here are the tasks in your list:");
-        for (Task task : this.tasks) {
-            sb.append(task).append("\n");
-            counter++;
+        if (tasks.isEmpty()) {
+            return "You have no tasks in the list";
+        } else {
+            int counter = 1;
+            StringBuilder sb = new StringBuilder();
+            //System.out.println("Here are the tasks in your list:");
+            for (Task task : this.tasks) {
+                sb.append(task).append("\n");
+                counter++;
+            }
+            sb.setLength(sb.length() - 1);
+            return sb.toString();
         }
-        sb.setLength(sb.length() - 1);
-        return sb.toString();
+
     }
 
 }
