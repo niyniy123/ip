@@ -6,7 +6,6 @@ package jibjab;
  * common functionality for task description and task completion.
  *
  * @author niyniy123
- * @version 1.0
  */
 public class Task {
     protected String description;
