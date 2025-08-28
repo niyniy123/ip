@@ -27,7 +27,7 @@ public class Storage {
         }
     }
 
-    public ArrayList<Task> loadTasks() throws JibJabException{
+    public ArrayList<Task> loadTasks() throws JibJabException {
         ArrayList<Task> tasks = new ArrayList<Task>();
         File file = new File(this.filePath);
         if (file.exists()) {
@@ -40,7 +40,7 @@ public class Storage {
             while (sc.hasNextLine()) {
                 String line = sc.nextLine();
                 String taskType = Character.toString(line.charAt(1));
-                String taskStatus =  Character.toString(line.charAt(4));
+                String taskStatus = Character.toString(line.charAt(4));
                 String taskDesc = line.substring(7);
 
                 if (taskType.equals("T")) {

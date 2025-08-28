@@ -25,7 +25,7 @@ public class TaskList {
     }
 
     public void deleteTask(int idx) {
-        Task task =  this.tasks.get(idx);
+        Task task = this.tasks.get(idx);
         this.tasks.remove(task);
         System.out.println("Noted. I've removed this task:");
         System.out.println(task);

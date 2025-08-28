@@ -20,7 +20,7 @@ public class Parser {
     public static String[] parseEvent(String input) {
         String[] eventTask = input.split(" /from ");
         String[] fromTo = eventTask[1].split(" /to ");
-        return new String[] {eventTask[0], fromTo[0], fromTo[1]};
+        return new String[]{eventTask[0], fromTo[0], fromTo[1]};
     }
 
     public static int parseIndex(String input) {
