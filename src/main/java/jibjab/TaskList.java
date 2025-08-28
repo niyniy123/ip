@@ -44,6 +44,20 @@ public class TaskList {
         System.out.println("OK, I've marked this task as not done yet:\n" + task);
     }
 
+    public String findTasks(String keyword) {
+        int counter = 1;
+        StringBuilder sb = new StringBuilder();
+        System.out.println("Here are the matching tasks in your list:");
+        for (Task task : this.tasks) {
+            if (task.toString().contains(keyword)) {
+                sb.append(counter).append(".").append(task).append("\n");
+                counter++;
+            }
+        }
+        sb.setLength(sb.length() - 1);
+        return sb.toString();
+    }
+
     public String toString() {
         if (tasks.isEmpty()) {
             return "You have no tasks in the list";
