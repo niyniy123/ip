@@ -6,14 +6,29 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+/**
+ * Handles persistence of tasks to and from a file on disk.
+ * The file format matches the output of TaskList#toString() and is parsed back into Task objects.
+ */
 public class Storage {
     private Scanner sc;
     private String filePath;
 
+    /**
+     * Creates a Storage bound to the given file path.
+     *
+     * @param filePath absolute or relative path to the tasks data file
+     */
     public Storage(String filePath) {
         this.filePath = filePath;
     }
 
+    /**
+     * Saves all tasks to the configured file. If the list is empty, nothing is written.
+     *
+     * @param tasks the TaskList to persist
+     * @throws JibJabException if writing fails, typically due to missing folders or IO errors
+     */
     public void saveTasks(TaskList tasks) throws JibJabException {
         if (tasks.isEmpty()) {
             return;
@@ -27,6 +42,13 @@ public class Storage {
         }
     }
 
+    /**
+     * Loads tasks from the configured file, if it exists.
+     * Parses each line to reconstruct Task instances of the appropriate type.
+     *
+     * @return a list of tasks loaded from storage; empty if no file exists
+     * @throws JibJabException if the file exists but cannot be read
+     */
     public ArrayList<Task> loadTasks() throws JibJabException {
         ArrayList<Task> tasks = new ArrayList<Task>();
         File file = new File(this.filePath);

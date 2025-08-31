@@ -1,11 +1,20 @@
 package jibjab;
 
+/**
+ * Entry point and main controller for the JibJab application.
+ * Wires together UI, storage and task list, and runs the command loop.
+ */
 public class JibJab {
     private Storage storage;
     private TaskList tasks;
     private Ui ui;
 
-
+    /**
+     * Creates a JibJab instance using the given file path for persistence.
+     * Attempts to load existing tasks; if loading fails, starts with an empty list.
+     *
+     * @param filePath path to the data file used for saving/loading tasks
+     */
     public JibJab(String filePath) {
         ui = new Ui();
         storage = new Storage(filePath);
@@ -18,10 +27,19 @@ public class JibJab {
 
     }
 
+    /**
+     * Launches the JibJab application.
+     *
+     * @param args command-line arguments (unused)
+     */
     public static void main(String[] args) {
         new JibJab("data/jibjab.txt").run();
     }
 
+    /**
+     * Runs the main interactive command loop until the user exits.
+     * Reads commands, calls parser, and performs task operations and persistence.
+     */
     public void run() {
         ui.showWelcome();
         boolean isExit = false;

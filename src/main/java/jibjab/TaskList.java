@@ -88,6 +88,13 @@ public class TaskList {
         System.out.println("OK, I've marked this task as not done yet:\n" + task);
     }
 
+    /**
+     * Finds tasks whose string representation contains the given keyword.
+     * Prints a header and returns the matching tasks as a newline-separated list.
+     *
+     * @param keyword substring to search for within each task's toString()
+     * @return newline-separated list of matching tasks; empty string if none match
+     */
     public String findTasks(String keyword) {
         int counter = 1;
         StringBuilder sb = new StringBuilder();
@@ -98,7 +105,9 @@ public class TaskList {
                 counter++;
             }
         }
-        sb.setLength(sb.length() - 1);
+        if (sb.length() > 0) {
+            sb.setLength(sb.length() - 1);
+        }
         return sb.toString();
     }
 
@@ -110,6 +119,7 @@ public class TaskList {
      * @return a string containing all tasks separated by newlines,
      *         or a message indicating an empty list
      */
+    @Override
     public String toString() {
         if (tasks.isEmpty()) {
             return "You have no tasks in the list";
