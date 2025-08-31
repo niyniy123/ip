@@ -12,8 +12,8 @@ public class TaskListTest {
         taskList.addTask(new Deadline("task2", "01/01/2077 18:00"));
         taskList.addTask(new Event("task3", "01/01/2077 18:00", "01/02/2077 19:00"));
 
-        assertEquals("[T][ ] task1\n[D][ ] task2 (by: Jan 01 2077 18:00)\n" +
-                "[E][ ] task3 (from: Jan 01 2077 18:00 to: Feb 01 2077 19:00)", taskList.toString());
+        assertEquals("[T][ ] task1\n[D][ ] task2 (by: Jan 01 2077 18:00)\n"
+                + "[E][ ] task3 (from: Jan 01 2077 18:00 to: Feb 01 2077 19:00)", taskList.toString());
     }
 
     @Test
