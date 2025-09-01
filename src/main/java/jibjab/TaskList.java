@@ -47,9 +47,6 @@ public class TaskList {
      */
     public void addTask(Task task) {
         this.tasks.add(task);
-        System.out.println("Got it. I've added this task:");
-        System.out.println(task);
-        System.out.println("Now you have " + this.tasks.size() + " tasks in the list");
     }
 
     /**
@@ -57,12 +54,10 @@ public class TaskList {
      *
      * @param idx the zero-based index of the task to be deleted
      */
-    public void deleteTask(int idx) {
+    public Task deleteTask(int idx) {
         Task task = this.tasks.get(idx);
         this.tasks.remove(task);
-        System.out.println("Noted. I've removed this task:");
-        System.out.println(task);
-        System.out.println("Now you have " + this.tasks.size() + " tasks in the list");
+        return task;
     }
 
     /**
@@ -70,10 +65,10 @@ public class TaskList {
      *
      * @param idx the zero-based index of the task to mark as done
      */
-    public void markTaskAsDone(int idx) {
+    public Task markTaskAsDone(int idx) {
         Task task = this.tasks.get(idx);
         task.setDone();
-        System.out.println("Nice! I've marked this task as done:\n" + task);
+        return task;
     }
 
     /**
@@ -82,10 +77,10 @@ public class TaskList {
      *
      * @param idx the zero-based index of the task to mark as not done
      */
-    public void markTaskAsNotDone(int idx) {
+    public Task markTaskAsNotDone(int idx) {
         Task task = this.tasks.get(idx);
         task.setNotDone();
-        System.out.println("OK, I've marked this task as not done yet:\n" + task);
+        return task;
     }
 
     /**
@@ -98,7 +93,6 @@ public class TaskList {
     public String findTasks(String keyword) {
         int counter = 1;
         StringBuilder sb = new StringBuilder();
-        System.out.println("Here are the matching tasks in your list:");
         for (Task task : this.tasks) {
             if (task.toString().contains(keyword)) {
                 sb.append(counter).append(".").append(task).append("\n");
@@ -109,6 +103,13 @@ public class TaskList {
             sb.setLength(sb.length() - 1);
         }
         return sb.toString();
+    }
+
+    /**
+     * Returns the number of tasks currently in the list.
+     */
+    public int size() {
+        return this.tasks.size();
     }
 
     /**
@@ -124,12 +125,9 @@ public class TaskList {
         if (tasks.isEmpty()) {
             return "You have no tasks in the list";
         } else {
-            int counter = 1;
             StringBuilder sb = new StringBuilder();
-            //System.out.println("Here are the tasks in your list:");
             for (Task task : this.tasks) {
                 sb.append(task).append("\n");
-                counter++;
             }
             sb.setLength(sb.length() - 1);
             return sb.toString();

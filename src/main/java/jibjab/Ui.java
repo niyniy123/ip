@@ -4,7 +4,7 @@ import java.util.Scanner;
 
 /**
  * Handles all console input and output interactions for the JibJab application.
- * Provides helper methods to read user commands and print common UI messages.
+ * Provides helper methods to read user commands and common UI messages.
  */
 public class Ui {
     private Scanner input;
@@ -17,25 +17,24 @@ public class Ui {
     }
 
     /**
-     * Prints the welcome banner shown when the application starts.
+     * Returns the welcome banner shown when the application starts.
      */
-    public void showWelcome() {
-        System.out.println("Hello from JibJab");
-        System.out.println("What can I do for you?");
+    public String showWelcome() {
+        return "Hello from JibJab\nWhat can I do for you?";
     }
 
     /**
-     * Prints the goodbye message shown when the application exits.
+     * Returns the goodbye message shown when the application exits.
      */
-    public void showGoodbye() {
-        System.out.println("Bye. Hope to see you again soon!");
+    public String showGoodbye() {
+        return "Bye. Hope to see you again soon!";
     }
 
     /**
-     * Notifies the user that loading tasks from storage failed and a new list will be created.
+     * Returns the message indicating loading tasks from storage failed and a new list will be created.
      */
-    public void showLoadingError() {
-        System.out.println("Failed to load tasks from file...creating new task list");
+    public String showLoadingError() {
+        return "Failed to load tasks from file...creating new task list";
     }
 
     /**
@@ -51,18 +50,35 @@ public class Ui {
     }
 
     /**
-     * Prints an error message to the error stream.
+     * Returns a formatted error message.
      *
      * @param message the error details to display
      */
-    public void showError(String message) {
-        System.err.println(message);
+    public String showError(String message) {
+        return message;
     }
 
     /**
-     * Prints a horizontal divider line used to separate sections of output.
+     * Returns a horizontal divider line used to separate sections of output.
      */
-    public void showLine() {
-        System.out.println("--------------------------------------");
+    public String showLine() {
+        return "--------------------------------------";
+    }
+
+    // Task operation messages
+    public String showTaskAdded(Task task, int count) {
+        return "Got it. I've added this task:\n" + task + "\nNow you have " + count + " tasks in the list";
+    }
+
+    public String showTaskDeleted(Task task, int count) {
+        return "Noted. I've removed this task:\n" + task + "\nNow you have " + count + " tasks in the list";
+    }
+
+    public String showTaskMarked(Task task) {
+        return "Nice! I've marked this task as done:\n" + task;
+    }
+
+    public String showTaskUnmarked(Task task) {
+        return "OK, I've marked this task as not done yet:\n" + task;
     }
 }
