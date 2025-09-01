@@ -25,11 +25,20 @@ public class MainWindow extends AnchorPane {
     private Image userImage = new Image(this.getClass().getResourceAsStream("/images/man.png"));
     private Image jibjabImage = new Image(this.getClass().getResourceAsStream("/images/ai.png"));
 
+    /**
+     * Initializes the main GUI components.
+     *
+     * This method performs the following:
+     * 1. Binds the vertical scroll property of the scroll pane to the height
+     *    property of the dialog container, ensuring the scroll bar automatically
+     *    follows new messages.
+     * 2. Displays a default welcome message in the dialog container.
+     */
     @FXML
     public void initialize() {
         scrollPane.vvalueProperty().bind(dialogContainer.heightProperty());
-
-
+        String welcomeMsg = "Hello from JibJab\nWhat can I do for you?";
+        dialogContainer.getChildren().add(DialogBox.getJibJabDialog(welcomeMsg, jibjabImage));
     }
 
     /** Injects the JibJab instance */
@@ -47,7 +56,7 @@ public class MainWindow extends AnchorPane {
         String response = jibjab.getResponse(input);
         dialogContainer.getChildren().addAll(
                 DialogBox.getUserDialog(input, userImage),
-                DialogBox.getDukeDialog(response, jibjabImage)
+                DialogBox.getJibJabDialog(response, jibjabImage)
         );
         userInput.clear();
     }

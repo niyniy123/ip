@@ -64,4 +64,21 @@ public class Ui {
     public String showLine() {
         return "--------------------------------------";
     }
+
+    // Task operation messages
+    public String showTaskAdded(Task task, int count) {
+        return "Got it. I've added this task:\n" + task + "\nNow you have " + count + " tasks in the list";
+    }
+
+    public String showTaskDeleted(Task task, int count) {
+        return "Noted. I've removed this task:\n" + task + "\nNow you have " + count + " tasks in the list";
+    }
+
+    public String showTaskMarked(Task task) {
+        return "Nice! I've marked this task as done:\n" + task;
+    }
+
+    public String showTaskUnmarked(Task task) {
+        return "OK, I've marked this task as not done yet:\n" + task;
+    }
 }

@@ -31,7 +31,60 @@ public class JibJab {
      * Generates a response for the user's chat message.
      */
     public String getResponse(String input) {
-        return "Duke heard: " + input;
+        try {
+            StringBuilder out = new StringBuilder();
+            String[] command = Parser.parseCommand(input);
+            switch (command[0]) {
+            case "bye":
+                storage.saveTasks(tasks);
+                out.append(ui.showGoodbye());
+                javafx.application.Platform.exit();
+                break;
+            case "todo":
+                String taskDesc = Parser.parseToDo(command);
+                ToDo todo = new ToDo(taskDesc);
+                tasks.addTask(todo);
+                out.append(ui.showTaskAdded(todo, tasks.size()));
+                break;
+            case "deadline":
+                String[] deadlineDetails = Parser.parseDeadline(command[1]);
+                Deadline deadline = new Deadline(deadlineDetails[0], deadlineDetails[1]);
+                tasks.addTask(deadline);
+                out.append(ui.showTaskAdded(deadline, tasks.size()));
+                break;
+            case "event":
+                String[] eventDetails = Parser.parseEvent(command[1]);
+                Event event = new Event(eventDetails[0], eventDetails[1], eventDetails[2]);
+                tasks.addTask(event);
+                out.append(ui.showTaskAdded(event, tasks.size()));
+                break;
+            case "list":
+                out.append(tasks.toString());
+                break;
+            case "find":
+                String keyword = command[1];
+                out.append("Here are the matching tasks in your list:\n");
+                out.append(tasks.findTasks(keyword));
+                break;
+            case "mark":
+                Task marked = tasks.markTaskAsDone(Parser.parseIndex(command[1]));
+                out.append(ui.showTaskMarked(marked));
+                break;
+            case "unmark":
+                Task unmarked = tasks.markTaskAsNotDone(Parser.parseIndex(command[1]));
+                out.append(ui.showTaskUnmarked(unmarked));
+                break;
+            case "delete":
+                Task removed = tasks.deleteTask(Parser.parseIndex(command[1]));
+                out.append(ui.showTaskDeleted(removed, tasks.size()));
+                break;
+            default:
+                throw new JibJabException("I don't understand this command");
+            }
+            return out.toString();
+        } catch (JibJabException e) {
+            return ui.showError(e.getMessage());
+        }
     }
 
     /**
@@ -63,15 +116,21 @@ public class JibJab {
                     break;
                 case "todo":
                     String taskDesc = Parser.parseToDo(command);
-                    tasks.addTask(new ToDo(taskDesc));
+                    ToDo todo2 = new ToDo(taskDesc);
+                    tasks.addTask(todo2);
+                    System.out.println(ui.showTaskAdded(todo2, tasks.size()));
                     break;
                 case "deadline":
                     String[] deadlineDetails = Parser.parseDeadline(command[1]);
-                    tasks.addTask(new Deadline(deadlineDetails[0], deadlineDetails[1]));
+                    Deadline deadline2 = new Deadline(deadlineDetails[0], deadlineDetails[1]);
+                    tasks.addTask(deadline2);
+                    System.out.println(ui.showTaskAdded(deadline2, tasks.size()));
                     break;
                 case "event":
                     String[] eventDetails = Parser.parseEvent(command[1]);
-                    tasks.addTask(new Event(eventDetails[0], eventDetails[1], eventDetails[2]));
+                    Event event2 = new Event(eventDetails[0], eventDetails[1], eventDetails[2]);
+                    tasks.addTask(event2);
+                    System.out.println(ui.showTaskAdded(event2, tasks.size()));
                     break;
                 case "list":
                     System.out.println(tasks);
@@ -81,13 +140,16 @@ public class JibJab {
                     System.out.println(tasks.findTasks(keyword));
                     break;
                 case "mark":
-                    tasks.markTaskAsDone(Parser.parseIndex(command[1]));
+                    Task marked2 = tasks.markTaskAsDone(Parser.parseIndex(command[1]));
+                    System.out.println(ui.showTaskMarked(marked2));
                     break;
                 case "unmark":
-                    tasks.markTaskAsNotDone(Parser.parseIndex(command[1]));
+                    Task unmarked2 = tasks.markTaskAsNotDone(Parser.parseIndex(command[1]));
+                    System.out.println(ui.showTaskUnmarked(unmarked2));
                     break;
                 case "delete":
-                    tasks.deleteTask(Parser.parseIndex(command[1]));
+                    Task removed2 = tasks.deleteTask(Parser.parseIndex(command[1]));
+                    System.out.println(ui.showTaskDeleted(removed2, tasks.size()));
                     break;
                 default:
                     throw new JibJabException("I don't understand this command");
