@@ -21,10 +21,17 @@ public class JibJab {
         try {
             tasks = new TaskList(storage.loadTasks());
         } catch (JibJabException e) {
-            ui.showLoadingError();
+            System.out.println(ui.showLoadingError());
             tasks = new TaskList();
         }
 
+    }
+
+    /**
+     * Generates a response for the user's chat message.
+     */
+    public String getResponse(String input) {
+        return "Duke heard: " + input;
     }
 
     /**
@@ -41,17 +48,17 @@ public class JibJab {
      * Reads commands, calls parser, and performs task operations and persistence.
      */
     public void run() {
-        ui.showWelcome();
+        System.out.println(ui.showWelcome());
         boolean isExit = false;
         while (!isExit) {
             try {
                 String fullCommand = ui.readCommand();
-                ui.showLine();
+                System.out.println(ui.showLine());
                 String[] command = Parser.parseCommand(fullCommand);
                 switch (command[0]) {
                 case "bye":
                     storage.saveTasks(tasks);
-                    ui.showGoodbye();
+                    System.out.println(ui.showGoodbye());
                     isExit = true;
                     break;
                 case "todo":
@@ -86,9 +93,9 @@ public class JibJab {
                     throw new JibJabException("I don't understand this command");
                 }
             } catch (JibJabException e) {
-                ui.showError(e.getMessage());
+                System.err.println(ui.showError(e.getMessage()));
             } finally {
-                ui.showLine();
+                System.out.println(ui.showLine());
             }
         }
     }
