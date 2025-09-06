@@ -24,8 +24,10 @@ public class Deadline extends Task {
      */
     public Deadline(String description, String deadline) {
         super(description);
+        assert deadline != null && !deadline.isBlank() : "Deadline string must not be null/blank";
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("[dd/MM/yyyy HH:mm][MMM dd yyyy HH:mm]");
         this.deadline = LocalDateTime.parse(deadline, formatter);
+        assert this.deadline != null : "Parsed deadline must not be null";
     }
 
     /**

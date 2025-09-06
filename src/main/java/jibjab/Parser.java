@@ -18,6 +18,7 @@ public class Parser {
      *         the remaining arguments (if any).
      */
     public static String[] parseCommand(String input) {
+        assert input != null : "Input to parseCommand must not be null";
         return input.split(" ", 2);
     }
 
@@ -47,6 +48,7 @@ public class Parser {
      *         index 1 contains the deadline
      */
     public static String[] parseDeadline(String input) {
+        assert input != null && input.contains(" /by ") : "Deadline input must contain ' /by '";
         return input.split(" /by ");
     }
 
@@ -62,8 +64,11 @@ public class Parser {
      * @throws ArrayIndexOutOfBoundsException if the input format is incorrect or missing required parts
      */
     public static String[] parseEvent(String input) {
+        assert input != null && input.contains(" /from ") && input.contains(" /to ") : "Event input must contain ' /from ' and ' /to '";
         String[] eventTask = input.split(" /from ");
+        assert eventTask.length == 2 && !eventTask[0].isEmpty() : "Event must have description before ' /from '";
         String[] fromTo = eventTask[1].split(" /to ");
+        assert fromTo.length == 2 && !fromTo[0].isEmpty() && !fromTo[1].isEmpty() : "Event must have both from and to dates";
         return new String[]{eventTask[0], fromTo[0], fromTo[1]};
     }
 
@@ -76,6 +81,9 @@ public class Parser {
      * @throws NumberFormatException if the input string cannot be parsed as an integer
      */
     public static int parseIndex(String input) {
-        return Integer.parseInt(input) - 1;
+        assert input != null && !input.isBlank() : "Index input must not be null/blank";
+        int idx = Integer.parseInt(input) - 1;
+        assert idx >= -1 : "Parsed index should not underflow; check input";
+        return idx;
     }
 }

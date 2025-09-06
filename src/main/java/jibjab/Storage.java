@@ -20,6 +20,7 @@ public class Storage {
      * @param filePath absolute or relative path to the tasks data file
      */
     public Storage(String filePath) {
+        assert filePath != null && !filePath.isBlank() : "Storage filePath must not be null/blank";
         this.filePath = filePath;
     }
 
@@ -30,6 +31,7 @@ public class Storage {
      * @throws JibJabException if writing fails, typically due to missing folders or IO errors
      */
     public void saveTasks(TaskList tasks) throws JibJabException {
+        assert tasks != null : "TaskList to save must not be null";
         if (tasks.isEmpty()) {
             return;
         }
@@ -61,6 +63,7 @@ public class Storage {
 
             while (sc.hasNextLine()) {
                 String line = sc.nextLine();
+                assert line != null && line.length() >= 7 : "Stored line must be at least 7 chars";
                 String taskType = Character.toString(line.charAt(1));
                 String taskStatus = Character.toString(line.charAt(4));
                 String taskDesc = line.substring(7);
@@ -74,6 +77,7 @@ public class Storage {
                 } else if (taskType.equals("D")) {
 
                     String[] split = taskDesc.split(" \\(by: ");
+                    assert split.length == 2 : "Stored deadline must contain ' (by: '";
                     String taskBy = split[1].substring(0, split[1].indexOf(")"));
                     Deadline task = new Deadline(split[0], taskBy);
                     if (taskStatus.equals("X")) {
@@ -82,7 +86,9 @@ public class Storage {
                     tasks.add(task);
                 } else if (taskType.equals("E")) {
                     String[] split = taskDesc.split(" \\(from: ");
+                    assert split.length == 2 : "Stored event must contain ' (from: '";
                     String[] fromTo = split[1].split(" to: ");
+                    assert fromTo.length == 2 : "Stored event must contain ' to: '";
                     String from = fromTo[0];
                     String to = fromTo[1].substring(0, fromTo[1].indexOf(")"));
                     Event task = new Event(split[0], from, to);

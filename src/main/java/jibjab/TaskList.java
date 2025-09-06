@@ -46,7 +46,9 @@ public class TaskList {
      * @param task the Task object to be added to the list.
      */
     public void addTask(Task task) {
+        assert task != null : "Task to add must not be null";
         this.tasks.add(task);
+        assert this.tasks.get(this.tasks.size() - 1) == task : "Task should be appended at end";
     }
 
     /**
@@ -55,6 +57,7 @@ public class TaskList {
      * @param idx the zero-based index of the task to be deleted
      */
     public Task deleteTask(int idx) {
+        assert idx >= 0 && idx < this.tasks.size() : "Delete index out of bounds";
         Task task = this.tasks.get(idx);
         this.tasks.remove(task);
         return task;
@@ -66,6 +69,7 @@ public class TaskList {
      * @param idx the zero-based index of the task to mark as done
      */
     public Task markTaskAsDone(int idx) {
+        assert idx >= 0 && idx < this.tasks.size() : "Mark-done index out of bounds";
         Task task = this.tasks.get(idx);
         task.setDone();
         return task;
@@ -78,6 +82,7 @@ public class TaskList {
      * @param idx the zero-based index of the task to mark as not done
      */
     public Task markTaskAsNotDone(int idx) {
+        assert idx >= 0 && idx < this.tasks.size() : "Mark-not-done index out of bounds";
         Task task = this.tasks.get(idx);
         task.setNotDone();
         return task;
