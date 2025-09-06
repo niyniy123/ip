@@ -128,15 +128,13 @@ public class TaskList {
     public String toString() {
         if (tasks.isEmpty()) {
             return EMPTY_LIST_MESSAGE;
-        } else {
-            StringBuilder sb = new StringBuilder();
-            for (Task task : this.tasks) {
-                sb.append(task).append(NEWLINE);
-            }
-            sb.setLength(sb.length() - 1);
-            return sb.toString();
         }
-
+        StringBuilder sb = new StringBuilder();
+        for (Task task : this.tasks) {
+            sb.append(task).append(NEWLINE);
+        }
+        sb.setLength(sb.length() - 1);
+        return sb.toString();
     }
 
 }

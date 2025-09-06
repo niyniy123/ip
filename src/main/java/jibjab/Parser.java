@@ -39,11 +39,10 @@ public class Parser {
      * @throws JibJabException if no task description is provided (array has insufficient elements)
      */
     public static String parseToDo(String[] input) throws JibJabException {
-        try {
-            return input[1];
-        } catch (ArrayIndexOutOfBoundsException e) {
+        if (input.length < 2 || input[1].isBlank()) {
             throw new JibJabException(ERR_TODO_DESCRIPTION_REQUIRED);
         }
+        return input[1];
     }
 
     /**
