@@ -12,6 +12,12 @@ import java.time.format.DateTimeFormatter;
  */
 public class Deadline extends Task {
 
+    private static final String INPUT_PATTERN = "[dd/MM/yyyy HH:mm][MMM dd yyyy HH:mm]";
+    private static final String DISPLAY_PATTERN = "MMM dd yyyy HH:mm";
+    private static final String TYPE_PREFIX = "[D]";
+    private static final String BY_PREFIX = " (by: ";
+    private static final String CLOSING_PAREN = ")";
+
     private LocalDateTime deadline;
 
     /**
@@ -24,7 +30,7 @@ public class Deadline extends Task {
      */
     public Deadline(String description, String deadline) {
         super(description);
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("[dd/MM/yyyy HH:mm][MMM dd yyyy HH:mm]");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(INPUT_PATTERN);
         this.deadline = LocalDateTime.parse(deadline, formatter);
     }
 
@@ -38,7 +44,7 @@ public class Deadline extends Task {
      */
     @Override
     public String toString() {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMM dd yyyy HH:mm");
-        return "[D]" + super.toString() + " (by: " + deadline.format(formatter) + ")";
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(DISPLAY_PATTERN);
+        return TYPE_PREFIX + super.toString() + BY_PREFIX + deadline.format(formatter) + CLOSING_PAREN;
     }
 }

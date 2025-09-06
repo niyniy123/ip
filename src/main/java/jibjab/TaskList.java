@@ -10,6 +10,10 @@ import java.util.ArrayList;
  * @author niyniy123
  */
 public class TaskList {
+    private static final String EMPTY_LIST_MESSAGE = "You have no tasks in the list";
+    private static final String ITEM_NUMBER_SEPARATOR = ".";
+    private static final String NEWLINE = "\n";
+
     private ArrayList<Task> tasks;
 
     /**
@@ -54,7 +58,8 @@ public class TaskList {
      *
      * @param idx the zero-based index of the task to be deleted
      */
-    public Task deleteTask(int idx) {
+    public Task deleteTask(int idx) throws JibJabException {
+        validateIndex(idx);
         Task task = this.tasks.get(idx);
         this.tasks.remove(task);
         return task;
@@ -65,7 +70,8 @@ public class TaskList {
      *
      * @param idx the zero-based index of the task to mark as done
      */
-    public Task markTaskAsDone(int idx) {
+    public Task markTaskAsDone(int idx) throws JibJabException {
+        validateIndex(idx);
         Task task = this.tasks.get(idx);
         task.setDone();
         return task;
@@ -77,7 +83,8 @@ public class TaskList {
      *
      * @param idx the zero-based index of the task to mark as not done
      */
-    public Task markTaskAsNotDone(int idx) {
+    public Task markTaskAsNotDone(int idx) throws JibJabException {
+        validateIndex(idx);
         Task task = this.tasks.get(idx);
         task.setNotDone();
         return task;
@@ -95,7 +102,7 @@ public class TaskList {
         StringBuilder sb = new StringBuilder();
         for (Task task : this.tasks) {
             if (task.toString().contains(keyword)) {
-                sb.append(counter).append(".").append(task).append("\n");
+                sb.append(counter).append(ITEM_NUMBER_SEPARATOR).append(task).append(NEWLINE);
                 counter++;
             }
         }
@@ -123,16 +130,25 @@ public class TaskList {
     @Override
     public String toString() {
         if (tasks.isEmpty()) {
-            return "You have no tasks in the list";
-        } else {
-            StringBuilder sb = new StringBuilder();
-            for (Task task : this.tasks) {
-                sb.append(task).append("\n");
-            }
-            sb.setLength(sb.length() - 1);
-            return sb.toString();
+            return EMPTY_LIST_MESSAGE;
         }
-
+        StringBuilder sb = new StringBuilder();
+        for (Task task : this.tasks) {
+            sb.append(task).append(NEWLINE);
+        }
+        sb.setLength(sb.length() - 1);
+        return sb.toString();
     }
 
+    /**
+     * Validates that the provided index refers to an existing task in the list.
+     *
+     * @param idx zero-based index to validate
+     * @throws JibJabException if the index is out of bounds
+     */
+    private void validateIndex(int idx) throws JibJabException {
+        if (idx < 0 || idx >= this.tasks.size()) {
+            throw new JibJabException("That task does not exist!");
+        }
+    }
 }

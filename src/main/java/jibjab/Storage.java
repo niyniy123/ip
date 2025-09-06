@@ -1,6 +1,7 @@
 package jibjab;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -11,8 +12,8 @@ import java.util.Scanner;
  * The file format matches the output of TaskList#toString() and is parsed back into Task objects.
  */
 public class Storage {
-    private Scanner sc;
-    private String filePath;
+    private static final String UNKNOWN_TASK_TYPE_MSG = "Unknown task type: ";
+    private final String filePath;
 
     /**
      * Creates a Storage bound to the given file path.
@@ -33,12 +34,17 @@ public class Storage {
         if (tasks.isEmpty()) {
             return;
         }
-        try {
-            PrintWriter pw = new PrintWriter(this.filePath);
-            pw.print(tasks);
-            pw.close();
-        } catch (IOException e) {
-            throw new JibJabException(e.getMessage() + "\nEnsure the data folder is present");
+        File file = new File(this.filePath);
+        File parent = file.getParentFile();
+        if (parent != null && !parent.exists()) {
+            if (!parent.mkdirs() && !parent.exists()) {
+                throw new JibJabException("Failed to create parent directories for data file: " + parent);
+            }
+        }
+        try (PrintWriter pw = new PrintWriter(this.filePath)) {
+            pw.print(tasks.toString());
+        } catch (FileNotFoundException e) {
+            throw new JibJabException("Data file not found: " + file.getPath());
         }
     }
 
@@ -52,49 +58,55 @@ public class Storage {
     public ArrayList<Task> loadTasks() throws JibJabException {
         ArrayList<Task> tasks = new ArrayList<Task>();
         File file = new File(this.filePath);
-        if (file.exists()) {
-            try {
-                sc = new Scanner(file);
-            } catch (IOException e) {
-                throw new JibJabException("Failed to load from file!");
-            }
-
+        if (!file.exists()) {
+            return tasks;
+        }
+        try (Scanner sc = new Scanner(file)) {
             while (sc.hasNextLine()) {
                 String line = sc.nextLine();
+                if (line.isEmpty()) {
+                    continue;
+                }
                 String taskType = Character.toString(line.charAt(1));
                 String taskStatus = Character.toString(line.charAt(4));
                 String taskDesc = line.substring(7);
 
-                if (taskType.equals("T")) {
-                    ToDo task = new ToDo(taskDesc);
-                    if (taskStatus.equals("X")) {
-                        task.setDone();
-                    }
-                    tasks.add(task);
-                } else if (taskType.equals("D")) {
-
-                    String[] split = taskDesc.split(" \\(by: ");
-                    String taskBy = split[1].substring(0, split[1].indexOf(")"));
-                    Deadline task = new Deadline(split[0], taskBy);
-                    if (taskStatus.equals("X")) {
-                        task.setDone();
-                    }
-                    tasks.add(task);
-                } else if (taskType.equals("E")) {
-                    String[] split = taskDesc.split(" \\(from: ");
-                    String[] fromTo = split[1].split(" to: ");
-                    String from = fromTo[0];
-                    String to = fromTo[1].substring(0, fromTo[1].indexOf(")"));
-                    Event task = new Event(split[0], from, to);
-                    if (taskStatus.equals("X")) {
-                        task.setDone();
-                    }
-                    tasks.add(task);
-                } else {
-                    System.err.println("Unknown task type: " + taskType);
+                Task parsed = parseTask(taskType, taskStatus, taskDesc);
+                if (parsed != null) {
+                    tasks.add(parsed);
                 }
             }
+        } catch (IOException e) {
+            throw new JibJabException("Failed to load from file: " + e.getMessage());
         }
         return tasks;
+    }
+
+    private Task parseTask(String taskType, String taskStatus, String taskDesc) {
+        Task task = null;
+        switch (taskType) {
+        case "T":
+            task = new ToDo(taskDesc);
+            break;
+        case "D":
+            String[] splitD = taskDesc.split(" \\(by: ");
+            String taskBy = splitD[1].substring(0, splitD[1].indexOf(")"));
+            task = new Deadline(splitD[0], taskBy);
+            break;
+        case "E":
+            String[] splitE = taskDesc.split(" \\(from: ");
+            String[] fromTo = splitE[1].split(" to: ");
+            String from = fromTo[0];
+            String to = fromTo[1].substring(0, fromTo[1].indexOf(")"));
+            task = new Event(splitE[0], from, to);
+            break;
+        default:
+            System.err.println(UNKNOWN_TASK_TYPE_MSG + taskType);
+            break;
+        }
+        if (task != null && "X".equals(taskStatus)) {
+            task.setDone();
+        }
+        return task;
     }
 }
