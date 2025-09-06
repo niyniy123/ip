@@ -25,9 +25,12 @@ public class Event extends Task {
      */
     public Event(String description, String from, String toDate) {
         super(description);
+        assert from != null && !from.isBlank() : "Event 'from' must not be null/blank";
+        assert toDate != null && !toDate.isBlank() : "Event 'to' must not be null/blank";
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("[dd/MM/yyyy HH:mm][MMM dd yyyy HH:mm]");
         this.fromDate = LocalDateTime.parse(from, formatter);
         this.toDate = LocalDateTime.parse(toDate, formatter);
+        assert !this.toDate.isBefore(this.fromDate) : "Event 'to' must be on/after 'from'";
     }
 
     /**
