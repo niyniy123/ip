@@ -12,20 +12,20 @@ import java.time.format.DateTimeFormatter;
  */
 public class Deadline extends Task {
 
-    protected LocalDateTime by;
+    protected LocalDateTime deadline;
 
     /**
      * Constructs a new Deadline task with the specified description and due date.
      * The constructor accepts flexible date-time formats for the deadline.
      *
      * @param description the description of the task that needs to be completed
-     * @param by the deadline date and time as a string. Accepted formats:
+     * @param deadline the deadline date and time as a string. Accepted formats:
      *           "dd/MM/yyyy HH:mm" or "MMM dd yyyy HH:mm"
      */
-    public Deadline(String description, String by) {
+    public Deadline(String description, String deadline) {
         super(description);
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("[dd/MM/yyyy HH:mm][MMM dd yyyy HH:mm]");
-        this.by = LocalDateTime.parse(by, formatter);
+        this.deadline = LocalDateTime.parse(deadline, formatter);
     }
 
     /**
@@ -39,6 +39,6 @@ public class Deadline extends Task {
     @Override
     public String toString() {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMM dd yyyy HH:mm");
-        return "[D]" + super.toString() + " (by: " + by.format(formatter) + ")";
+        return "[D]" + super.toString() + " (by: " + deadline.format(formatter) + ")";
     }
 }
