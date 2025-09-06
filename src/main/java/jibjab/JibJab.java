@@ -67,15 +67,15 @@ public class JibJab {
                 out.append(tasks.findTasks(keyword));
                 break;
             case "mark":
-                Task marked = tasks.markTaskAsDone(Parser.parseIndex(command[1]));
+                Task marked = tasks.markTaskAsDone(Parser.parseIndex(input));
                 out.append(ui.showTaskMarked(marked));
                 break;
             case "unmark":
-                Task unmarked = tasks.markTaskAsNotDone(Parser.parseIndex(command[1]));
+                Task unmarked = tasks.markTaskAsNotDone(Parser.parseIndex(input));
                 out.append(ui.showTaskUnmarked(unmarked));
                 break;
             case "delete":
-                Task removed = tasks.deleteTask(Parser.parseIndex(command[1]));
+                Task removed = tasks.deleteTask(Parser.parseIndex(input));
                 out.append(ui.showTaskDeleted(removed, tasks.size()));
                 break;
             default:

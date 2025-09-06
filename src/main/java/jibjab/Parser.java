@@ -82,7 +82,13 @@ public class Parser {
      * @return the corresponding 0-based index for tasklist access
      * @throws NumberFormatException if the input string cannot be parsed as an integer
      */
-    public static int parseIndex(String input) {
-        return Integer.parseInt(input) - ONE_BASED_OFFSET;
+    public static int parseIndex(String input) throws JibJabException {
+        String idx;
+        try {
+            idx = input.split(SPACE)[1];
+        } catch (ArrayIndexOutOfBoundsException e) {
+            throw new JibJabException("Please provide a task number.");
+        }
+        return Integer.parseInt(idx) - ONE_BASED_OFFSET;
     }
 }

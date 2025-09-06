@@ -58,7 +58,8 @@ public class TaskList {
      *
      * @param idx the zero-based index of the task to be deleted
      */
-    public Task deleteTask(int idx) {
+    public Task deleteTask(int idx) throws JibJabException {
+        validateIndex(idx);
         Task task = this.tasks.get(idx);
         this.tasks.remove(task);
         return task;
@@ -69,7 +70,8 @@ public class TaskList {
      *
      * @param idx the zero-based index of the task to mark as done
      */
-    public Task markTaskAsDone(int idx) {
+    public Task markTaskAsDone(int idx) throws JibJabException {
+        validateIndex(idx);
         Task task = this.tasks.get(idx);
         task.setDone();
         return task;
@@ -81,7 +83,8 @@ public class TaskList {
      *
      * @param idx the zero-based index of the task to mark as not done
      */
-    public Task markTaskAsNotDone(int idx) {
+    public Task markTaskAsNotDone(int idx) throws JibJabException {
+        validateIndex(idx);
         Task task = this.tasks.get(idx);
         task.setNotDone();
         return task;
@@ -137,4 +140,15 @@ public class TaskList {
         return sb.toString();
     }
 
+    /**
+     * Validates that the provided index refers to an existing task in the list.
+     *
+     * @param idx zero-based index to validate
+     * @throws JibJabException if the index is out of bounds
+     */
+    private void validateIndex(int idx) throws JibJabException {
+        if (idx < 0 || idx >= this.tasks.size()) {
+            throw new JibJabException("That task does not exist!");
+        }
+    }
 }
