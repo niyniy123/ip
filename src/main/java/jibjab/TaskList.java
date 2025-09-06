@@ -10,6 +10,10 @@ import java.util.ArrayList;
  * @author niyniy123
  */
 public class TaskList {
+    private static final String EMPTY_LIST_MESSAGE = "You have no tasks in the list";
+    private static final String ITEM_NUMBER_SEPARATOR = ".";
+    private static final String NEWLINE = "\n";
+
     private ArrayList<Task> tasks;
 
     /**
@@ -95,7 +99,7 @@ public class TaskList {
         StringBuilder sb = new StringBuilder();
         for (Task task : this.tasks) {
             if (task.toString().contains(keyword)) {
-                sb.append(counter).append(".").append(task).append("\n");
+                sb.append(counter).append(ITEM_NUMBER_SEPARATOR).append(task).append(NEWLINE);
                 counter++;
             }
         }
@@ -123,11 +127,11 @@ public class TaskList {
     @Override
     public String toString() {
         if (tasks.isEmpty()) {
-            return "You have no tasks in the list";
+            return EMPTY_LIST_MESSAGE;
         } else {
             StringBuilder sb = new StringBuilder();
             for (Task task : this.tasks) {
-                sb.append(task).append("\n");
+                sb.append(task).append(NEWLINE);
             }
             sb.setLength(sb.length() - 1);
             return sb.toString();

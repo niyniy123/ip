@@ -8,6 +8,14 @@ package jibjab;
  * @author niyniy123
  */
 public class Parser {
+    private static final String SPACE = " ";
+    private static final int SPLIT_LIMIT_TWO = 2;
+    private static final String DEADLINE_DELIMITER = " /by ";
+    private static final String EVENT_FROM_DELIMITER = " /from ";
+    private static final String EVENT_TO_DELIMITER = " /to ";
+    private static final int ONE_BASED_OFFSET = 1;
+    private static final String ERR_TODO_DESCRIPTION_REQUIRED = "You need to enter a task description";
+
     /**
      * Parses a command string by splitting it into command type and arguments.
      * The input is split at the first space, with the first part being the command
@@ -18,7 +26,7 @@ public class Parser {
      *         the remaining arguments (if any).
      */
     public static String[] parseCommand(String input) {
-        return input.split(" ", 2);
+        return input.split(SPACE, SPLIT_LIMIT_TWO);
     }
 
     /**
@@ -34,7 +42,7 @@ public class Parser {
         try {
             return input[1];
         } catch (ArrayIndexOutOfBoundsException e) {
-            throw new JibJabException("You need to enter a task description");
+            throw new JibJabException(ERR_TODO_DESCRIPTION_REQUIRED);
         }
     }
 
@@ -47,7 +55,7 @@ public class Parser {
      *         index 1 contains the deadline
      */
     public static String[] parseDeadline(String input) {
-        return input.split(" /by ");
+        return input.split(DEADLINE_DELIMITER);
     }
 
     /**
@@ -62,8 +70,8 @@ public class Parser {
      * @throws ArrayIndexOutOfBoundsException if the input format is incorrect or missing required parts
      */
     public static String[] parseEvent(String input) {
-        String[] eventTask = input.split(" /from ");
-        String[] fromTo = eventTask[1].split(" /to ");
+        String[] eventTask = input.split(EVENT_FROM_DELIMITER);
+        String[] fromTo = eventTask[1].split(EVENT_TO_DELIMITER);
         return new String[]{eventTask[0], fromTo[0], fromTo[1]};
     }
 
@@ -76,6 +84,6 @@ public class Parser {
      * @throws NumberFormatException if the input string cannot be parsed as an integer
      */
     public static int parseIndex(String input) {
-        return Integer.parseInt(input) - 1;
+        return Integer.parseInt(input) - ONE_BASED_OFFSET;
     }
 }
