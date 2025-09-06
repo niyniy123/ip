@@ -50,15 +50,6 @@ public class Ui {
     }
 
     /**
-     * Returns a formatted error message.
-     *
-     * @param message the error details to display
-     */
-    public String showError(String message) {
-        return message;
-    }
-
-    /**
      * Returns a horizontal divider line used to separate sections of output.
      */
     public String showLine() {
