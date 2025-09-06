@@ -9,8 +9,8 @@ import java.time.format.DateTimeFormatter;
  * @author niyniy123
  */
 public class Event extends Task {
-    protected LocalDateTime from;
-    protected LocalDateTime to;
+    private LocalDateTime from;
+    private LocalDateTime to;
 
     /**
      * Constructs a new Event with the given task description and time period.
