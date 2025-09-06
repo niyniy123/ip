@@ -9,8 +9,8 @@ import java.time.format.DateTimeFormatter;
  * @author niyniy123
  */
 public class Event extends Task {
-    private LocalDateTime from;
-    private LocalDateTime to;
+    private LocalDateTime fromDate;
+    private LocalDateTime toDate;
 
     /**
      * Constructs a new Event with the given task description and time period.
@@ -18,16 +18,16 @@ public class Event extends Task {
      * @param description the description of the event task
      * @param from the starting date and time as a string. Accepted formats:
      *             "dd/MM/yyyy HH:mm" or "MMM dd yyyy HH:mm"
-     * @param to the ending date and time as a string. Accepted formats:
+     * @param toDate the ending date and time as a string. Accepted formats:
      *           "dd/MM/yyyy HH:mm" or "MMM dd yyyy HH:mm"
      * @throws java.time.format.DateTimeParseException if the from or to strings
      *         cannot be parsed using the specified formats
      */
-    public Event(String description, String from, String to) {
+    public Event(String description, String from, String toDate) {
         super(description);
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("[dd/MM/yyyy HH:mm][MMM dd yyyy HH:mm]");
-        this.from = LocalDateTime.parse(from, formatter);
-        this.to = LocalDateTime.parse(to, formatter);
+        this.fromDate = LocalDateTime.parse(from, formatter);
+        this.toDate = LocalDateTime.parse(toDate, formatter);
     }
 
     /**
@@ -43,6 +43,6 @@ public class Event extends Task {
     @Override
     public String toString() {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMM dd yyyy HH:mm");
-        return "[E]" + super.toString() + " (from: " + from.format(formatter) + " to: " + to.format(formatter) + ")";
+        return "[E]" + super.toString() + " (from: " + fromDate.format(formatter) + " to: " + toDate.format(formatter) + ")";
     }
 }
