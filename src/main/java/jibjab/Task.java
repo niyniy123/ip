@@ -8,6 +8,11 @@ package jibjab;
  * @author niyniy123
  */
 public class Task {
+    private static final String DONE_ICON = "X";
+    private static final String NOT_DONE_ICON = " ";
+    private static final String LEFT_BRACKET = "[";
+    private static final String RIGHT_BRACKET_SPACE = "] ";
+
     private String description;
     private boolean isDone;
 
@@ -45,7 +50,7 @@ public class Task {
      *         This icon is typically used in text-based displays of the task.
      */
     public String getStatusIcon() {
-        return (isDone ? "X" : " "); // mark done task with X
+        return (isDone ? DONE_ICON : NOT_DONE_ICON); // mark done task with X
     }
 
     /**
@@ -57,6 +62,6 @@ public class Task {
      */
     @Override
     public String toString() {
-        return "[" + getStatusIcon() + "] " + description;
+        return LEFT_BRACKET + getStatusIcon() + RIGHT_BRACKET_SPACE + description;
     }
 }

@@ -8,6 +8,14 @@ package jibjab;
  * @author niyniy123
  */
 public class Parser {
+    private static final String SPACE = " ";
+    private static final int SPLIT_LIMIT_TWO = 2;
+    private static final String DEADLINE_DELIMITER = " /by ";
+    private static final String EVENT_FROM_DELIMITER = " /from ";
+    private static final String EVENT_TO_DELIMITER = " /to ";
+    private static final int ONE_BASED_OFFSET = 1;
+    private static final String ERR_TODO_DESCRIPTION_REQUIRED = "You need to enter a task description";
+
     /**
      * Parses a command string by splitting it into command type and arguments.
      * The input is split at the first space, with the first part being the command
@@ -19,7 +27,7 @@ public class Parser {
      */
     public static String[] parseCommand(String input) {
         assert input != null : "Input to parseCommand must not be null";
-        return input.split(" ", 2);
+        return input.split(SPACE, SPLIT_LIMIT_TWO);
     }
 
     /**
@@ -32,11 +40,10 @@ public class Parser {
      * @throws JibJabException if no task description is provided (array has insufficient elements)
      */
     public static String parseToDo(String[] input) throws JibJabException {
-        try {
-            return input[1];
-        } catch (ArrayIndexOutOfBoundsException e) {
-            throw new JibJabException("You need to enter a task description");
+        if (input.length < 2 || input[1].isBlank()) {
+            throw new JibJabException(ERR_TODO_DESCRIPTION_REQUIRED);
         }
+        return input[1];
     }
 
     /**
@@ -49,7 +56,7 @@ public class Parser {
      */
     public static String[] parseDeadline(String input) {
         assert input != null && input.contains(" /by ") : "Deadline input must contain ' /by '";
-        return input.split(" /by ");
+        return input.split(DEADLINE_DELIMITER);
     }
 
     /**
@@ -64,11 +71,13 @@ public class Parser {
      * @throws ArrayIndexOutOfBoundsException if the input format is incorrect or missing required parts
      */
     public static String[] parseEvent(String input) {
-        assert input != null && input.contains(" /from ") && input.contains(" /to ") : "Event input must contain ' /from ' and ' /to '";
-        String[] eventTask = input.split(" /from ");
+        assert input != null && input.contains(EVENT_FROM_DELIMITER)
+                && input.contains(EVENT_TO_DELIMITER) : "Event input must contain ' /from ' and ' /to '";
+        String[] eventTask = input.split(EVENT_FROM_DELIMITER);
         assert eventTask.length == 2 && !eventTask[0].isEmpty() : "Event must have description before ' /from '";
-        String[] fromTo = eventTask[1].split(" /to ");
-        assert fromTo.length == 2 && !fromTo[0].isEmpty() && !fromTo[1].isEmpty() : "Event must have both from and to dates";
+        String[] fromTo = eventTask[1].split(EVENT_TO_DELIMITER);
+        assert fromTo.length == 2 && !fromTo[0].isEmpty()
+                && !fromTo[1].isEmpty() : "Event must have both from and to dates";
         return new String[]{eventTask[0], fromTo[0], fromTo[1]};
     }
 
@@ -80,10 +89,19 @@ public class Parser {
      * @return the corresponding 0-based index for tasklist access
      * @throws NumberFormatException if the input string cannot be parsed as an integer
      */
-    public static int parseIndex(String input) {
+    public static int parseIndex(String input, int tasklistSize) throws JibJabException {
+        String idx;
+
         assert input != null && !input.isBlank() : "Index input must not be null/blank";
-        int idx = Integer.parseInt(input) - 1;
-        assert idx >= -1 : "Parsed index should not underflow; check input";
-        return idx;
+        try {
+            idx = input.split(SPACE)[1];
+        } catch (ArrayIndexOutOfBoundsException e) {
+            throw new JibJabException("Please provide a task number.");
+        }
+        int parsedIndex = Integer.parseInt(idx) - ONE_BASED_OFFSET;
+        if (parsedIndex < 0 || parsedIndex >= tasklistSize) {
+            throw new JibJabException("That task does not exist!");
+        }
+        return parsedIndex;
     }
 }

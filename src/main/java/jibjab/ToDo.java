@@ -4,6 +4,8 @@ package jibjab;
  * Represents a simple task without any associated date/time.
  */
 public class ToDo extends Task {
+    private static final String TYPE_PREFIX = "[T]";
+
     /**
      * Constructs a ToDo task with the given description.
      *
@@ -20,6 +22,6 @@ public class ToDo extends Task {
      */
     @Override
     public String toString() {
-        return "[T]" + super.toString();
+        return TYPE_PREFIX + super.toString();
     }
 }

@@ -10,6 +10,10 @@ import java.util.ArrayList;
  * @author niyniy123
  */
 public class TaskList {
+    private static final String EMPTY_LIST_MESSAGE = "You have no tasks in the list";
+    private static final String ITEM_NUMBER_SEPARATOR = ".";
+    private static final String NEWLINE = "\n";
+
     private ArrayList<Task> tasks;
 
     /**
@@ -100,7 +104,7 @@ public class TaskList {
         StringBuilder sb = new StringBuilder();
         for (Task task : this.tasks) {
             if (task.toString().contains(keyword)) {
-                sb.append(counter).append(".").append(task).append("\n");
+                sb.append(counter).append(ITEM_NUMBER_SEPARATOR).append(task).append(NEWLINE);
                 counter++;
             }
         }
@@ -113,7 +117,7 @@ public class TaskList {
     /**
      * Returns the number of tasks currently in the list.
      */
-    public int size() {
+    public int getSize() {
         return this.tasks.size();
     }
 
@@ -128,16 +132,13 @@ public class TaskList {
     @Override
     public String toString() {
         if (tasks.isEmpty()) {
-            return "You have no tasks in the list";
-        } else {
-            StringBuilder sb = new StringBuilder();
-            for (Task task : this.tasks) {
-                sb.append(task).append("\n");
-            }
-            sb.setLength(sb.length() - 1);
-            return sb.toString();
+            return EMPTY_LIST_MESSAGE;
         }
-
+        StringBuilder sb = new StringBuilder();
+        for (Task task : this.tasks) {
+            sb.append(task).append(NEWLINE);
+        }
+        sb.setLength(sb.length() - 1);
+        return sb.toString();
     }
-
 }

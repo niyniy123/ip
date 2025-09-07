@@ -9,6 +9,13 @@ import java.time.format.DateTimeFormatter;
  * @author niyniy123
  */
 public class Event extends Task {
+    private static final String INPUT_PATTERN = "[dd/MM/yyyy HH:mm][MMM dd yyyy HH:mm]";
+    private static final String DISPLAY_PATTERN = "MMM dd yyyy HH:mm";
+    private static final String TYPE_PREFIX = "[E]";
+    private static final String FROM_PREFIX = " (from: ";
+    private static final String TO_SEPARATOR = " to: ";
+    private static final String CLOSING_PAREN = ")";
+
     private LocalDateTime fromDate;
     private LocalDateTime toDate;
 
@@ -25,11 +32,14 @@ public class Event extends Task {
      */
     public Event(String description, String from, String toDate) {
         super(description);
+
         assert from != null && !from.isBlank() : "Event 'from' must not be null/blank";
         assert toDate != null && !toDate.isBlank() : "Event 'to' must not be null/blank";
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("[dd/MM/yyyy HH:mm][MMM dd yyyy HH:mm]");
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(INPUT_PATTERN);
         this.fromDate = LocalDateTime.parse(from, formatter);
         this.toDate = LocalDateTime.parse(toDate, formatter);
+
         assert !this.toDate.isBefore(this.fromDate) : "Event 'to' must be on/after 'from'";
     }
 
@@ -46,6 +56,7 @@ public class Event extends Task {
     @Override
     public String toString() {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMM dd yyyy HH:mm");
-        return "[E]" + super.toString() + " (from: " + fromDate.format(formatter) + " to: " + toDate.format(formatter) + ")";
+        return "[E]" + super.toString()
+                + " (from: " + fromDate.format(formatter) + " to: " + toDate.format(formatter) + ")";
     }
 }

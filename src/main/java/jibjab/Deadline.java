@@ -12,6 +12,12 @@ import java.time.format.DateTimeFormatter;
  */
 public class Deadline extends Task {
 
+    private static final String INPUT_PATTERN = "[dd/MM/yyyy HH:mm][MMM dd yyyy HH:mm]";
+    private static final String DISPLAY_PATTERN = "MMM dd yyyy HH:mm";
+    private static final String TYPE_PREFIX = "[D]";
+    private static final String BY_PREFIX = " (by: ";
+    private static final String CLOSING_PAREN = ")";
+
     private LocalDateTime deadline;
 
     /**
@@ -24,9 +30,12 @@ public class Deadline extends Task {
      */
     public Deadline(String description, String deadline) {
         super(description);
+
         assert deadline != null && !deadline.isBlank() : "Deadline string must not be null/blank";
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("[dd/MM/yyyy HH:mm][MMM dd yyyy HH:mm]");
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(INPUT_PATTERN);
         this.deadline = LocalDateTime.parse(deadline, formatter);
+
         assert this.deadline != null : "Parsed deadline must not be null";
     }
 
