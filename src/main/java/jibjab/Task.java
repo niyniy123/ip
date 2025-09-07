@@ -1,5 +1,7 @@
 package jibjab;
 
+import java.util.Objects;
+
 /**
  * Represents a task in the JibJab application.
  * This is the base class for all task types (ToDo, Deadline, Event) and provides
@@ -63,5 +65,22 @@ public class Task {
     @Override
     public String toString() {
         return LEFT_BRACKET + getStatusIcon() + RIGHT_BRACKET_SPACE + description;
+    }
+
+    /**
+     * Equality for tasks is based on the concrete class and the description only.
+     * Completion status is intentionally ignored so that the same logical task
+     * is considered a duplicate whether or not it has been marked done.
+     */
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        Task task = (Task) o;
+        return Objects.equals(this.description, task.description);
     }
 }
