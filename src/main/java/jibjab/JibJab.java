@@ -44,19 +44,19 @@ public class JibJab {
                 String taskDesc = Parser.parseToDo(command);
                 ToDo todo = new ToDo(taskDesc);
                 tasks.addTask(todo);
-                out.append(ui.showTaskAdded(todo, tasks.size()));
+                out.append(ui.showTaskAdded(todo, tasks.getSize()));
                 break;
             case "deadline":
                 String[] deadlineDetails = Parser.parseDeadline(command[1]);
                 Deadline deadline = new Deadline(deadlineDetails[0], deadlineDetails[1]);
                 tasks.addTask(deadline);
-                out.append(ui.showTaskAdded(deadline, tasks.size()));
+                out.append(ui.showTaskAdded(deadline, tasks.getSize()));
                 break;
             case "event":
                 String[] eventDetails = Parser.parseEvent(command[1]);
                 Event event = new Event(eventDetails[0], eventDetails[1], eventDetails[2]);
                 tasks.addTask(event);
-                out.append(ui.showTaskAdded(event, tasks.size()));
+                out.append(ui.showTaskAdded(event, tasks.getSize()));
                 break;
             case "list":
                 out.append(tasks.toString());
@@ -67,16 +67,16 @@ public class JibJab {
                 out.append(tasks.findTasks(keyword));
                 break;
             case "mark":
-                Task marked = tasks.markTaskAsDone(Parser.parseIndex(input));
+                Task marked = tasks.markTaskAsDone(Parser.parseIndex(input, tasks.getSize()));
                 out.append(ui.showTaskMarked(marked));
                 break;
             case "unmark":
-                Task unmarked = tasks.markTaskAsNotDone(Parser.parseIndex(input));
+                Task unmarked = tasks.markTaskAsNotDone(Parser.parseIndex(input, tasks.getSize()));
                 out.append(ui.showTaskUnmarked(unmarked));
                 break;
             case "delete":
-                Task removed = tasks.deleteTask(Parser.parseIndex(input));
-                out.append(ui.showTaskDeleted(removed, tasks.size()));
+                Task removed = tasks.deleteTask(Parser.parseIndex(input, tasks.getSize()));
+                out.append(ui.showTaskDeleted(removed, tasks.getSize()));
                 break;
             default:
                 throw new JibJabException("I don't understand this command");

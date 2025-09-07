@@ -22,11 +22,7 @@ public class TaskListTest {
         taskList.addTask(new ToDo("task1"));
         taskList.addTask(new Deadline("task2", "01/01/2077 18:00"));
         taskList.addTask(new Event("task3", "01/01/2077 18:00", "01/02/2077 19:00"));
-        try {
-            taskList.deleteTask(2);
-        } catch (JibJabException e) {
-            e.printStackTrace();
-        }
+        taskList.deleteTask(2);
         assertEquals("[T][ ] task1\n[D][ ] task2 (by: Jan 01 2077 18:00)", taskList.toString());
 
     }

@@ -32,9 +32,15 @@ public class Event extends Task {
      */
     public Event(String description, String from, String toDate) {
         super(description);
+
+        assert from != null && !from.isBlank() : "Event 'from' must not be null/blank";
+        assert toDate != null && !toDate.isBlank() : "Event 'to' must not be null/blank";
+
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern(INPUT_PATTERN);
         this.fromDate = LocalDateTime.parse(from, formatter);
         this.toDate = LocalDateTime.parse(toDate, formatter);
+
+        assert !this.toDate.isBefore(this.fromDate) : "Event 'to' must be on/after 'from'";
     }
 
     /**
@@ -49,9 +55,8 @@ public class Event extends Task {
      */
     @Override
     public String toString() {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(DISPLAY_PATTERN);
-        return TYPE_PREFIX + super.toString()
-                + FROM_PREFIX + fromDate.format(formatter)
-                + TO_SEPARATOR + toDate.format(formatter) + CLOSING_PAREN;
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMM dd yyyy HH:mm");
+        return "[E]" + super.toString()
+                + " (from: " + fromDate.format(formatter) + " to: " + toDate.format(formatter) + ")";
     }
 }

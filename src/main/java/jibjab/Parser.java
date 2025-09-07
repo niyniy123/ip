@@ -26,6 +26,7 @@ public class Parser {
      *         the remaining arguments (if any).
      */
     public static String[] parseCommand(String input) {
+        assert input != null : "Input to parseCommand must not be null";
         return input.split(SPACE, SPLIT_LIMIT_TWO);
     }
 
@@ -54,6 +55,7 @@ public class Parser {
      *         index 1 contains the deadline
      */
     public static String[] parseDeadline(String input) {
+        assert input != null && input.contains(" /by ") : "Deadline input must contain ' /by '";
         return input.split(DEADLINE_DELIMITER);
     }
 
@@ -69,8 +71,13 @@ public class Parser {
      * @throws ArrayIndexOutOfBoundsException if the input format is incorrect or missing required parts
      */
     public static String[] parseEvent(String input) {
+        assert input != null && input.contains(EVENT_FROM_DELIMITER)
+                && input.contains(EVENT_TO_DELIMITER) : "Event input must contain ' /from ' and ' /to '";
         String[] eventTask = input.split(EVENT_FROM_DELIMITER);
+        assert eventTask.length == 2 && !eventTask[0].isEmpty() : "Event must have description before ' /from '";
         String[] fromTo = eventTask[1].split(EVENT_TO_DELIMITER);
+        assert fromTo.length == 2 && !fromTo[0].isEmpty()
+                && !fromTo[1].isEmpty() : "Event must have both from and to dates";
         return new String[]{eventTask[0], fromTo[0], fromTo[1]};
     }
 
@@ -82,13 +89,19 @@ public class Parser {
      * @return the corresponding 0-based index for tasklist access
      * @throws NumberFormatException if the input string cannot be parsed as an integer
      */
-    public static int parseIndex(String input) throws JibJabException {
+    public static int parseIndex(String input, int tasklistSize) throws JibJabException {
         String idx;
+
+        assert input != null && !input.isBlank() : "Index input must not be null/blank";
         try {
             idx = input.split(SPACE)[1];
         } catch (ArrayIndexOutOfBoundsException e) {
             throw new JibJabException("Please provide a task number.");
         }
-        return Integer.parseInt(idx) - ONE_BASED_OFFSET;
+        int parsedIndex = Integer.parseInt(idx) - ONE_BASED_OFFSET;
+        if (parsedIndex < 0 || parsedIndex >= tasklistSize) {
+            throw new JibJabException("That task does not exist!");
+        }
+        return parsedIndex;
     }
 }

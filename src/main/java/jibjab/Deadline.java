@@ -30,8 +30,13 @@ public class Deadline extends Task {
      */
     public Deadline(String description, String deadline) {
         super(description);
+
+        assert deadline != null && !deadline.isBlank() : "Deadline string must not be null/blank";
+
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern(INPUT_PATTERN);
         this.deadline = LocalDateTime.parse(deadline, formatter);
+
+        assert this.deadline != null : "Parsed deadline must not be null";
     }
 
     /**
@@ -44,7 +49,7 @@ public class Deadline extends Task {
      */
     @Override
     public String toString() {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(DISPLAY_PATTERN);
-        return TYPE_PREFIX + super.toString() + BY_PREFIX + deadline.format(formatter) + CLOSING_PAREN;
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMM dd yyyy HH:mm");
+        return "[D]" + super.toString() + " (by: " + deadline.format(formatter) + ")";
     }
 }
