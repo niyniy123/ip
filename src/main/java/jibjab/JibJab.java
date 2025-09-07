@@ -43,18 +43,27 @@ public class JibJab {
             case "todo":
                 String taskDesc = Parser.parseToDo(command);
                 ToDo todo = new ToDo(taskDesc);
+                if (tasks.contains(todo)) {
+                    throw new JibJabException("This task already exists in your list!");
+                }
                 tasks.addTask(todo);
                 out.append(ui.showTaskAdded(todo, tasks.getSize()));
                 break;
             case "deadline":
                 String[] deadlineDetails = Parser.parseDeadline(command[1]);
                 Deadline deadline = new Deadline(deadlineDetails[0], deadlineDetails[1]);
+                if (tasks.contains(deadline)) {
+                    throw new JibJabException("This task already exists in your list!");
+                }
                 tasks.addTask(deadline);
                 out.append(ui.showTaskAdded(deadline, tasks.getSize()));
                 break;
             case "event":
                 String[] eventDetails = Parser.parseEvent(command[1]);
                 Event event = new Event(eventDetails[0], eventDetails[1], eventDetails[2]);
+                if (tasks.contains(event)) {
+                    throw new JibJabException("This task already exists in your list!");
+                }
                 tasks.addTask(event);
                 out.append(ui.showTaskAdded(event, tasks.getSize()));
                 break;

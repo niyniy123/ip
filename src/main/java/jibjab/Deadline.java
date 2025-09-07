@@ -2,6 +2,7 @@ package jibjab;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Objects;
 
 /**
  * Represents a task with a specific deadline by which it must be completed.
@@ -51,5 +52,14 @@ public class Deadline extends Task {
     public String toString() {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMM dd yyyy HH:mm");
         return "[D]" + super.toString() + " (by: " + deadline.format(formatter) + ")";
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (!super.equals(o)) {
+            return false;
+        }
+        Deadline d = (Deadline) o;
+        return Objects.equals(this.deadline, d.deadline);
     }
 }

@@ -2,6 +2,7 @@ package jibjab;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Objects;
 
 /**
  * Represents an event task with a specific duration defined by start and end times.
@@ -58,5 +59,15 @@ public class Event extends Task {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMM dd yyyy HH:mm");
         return "[E]" + super.toString()
                 + " (from: " + fromDate.format(formatter) + " to: " + toDate.format(formatter) + ")";
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (!super.equals(o)) {
+            return false;
+        }
+        Event e = (Event) o;
+        return Objects.equals(this.fromDate, e.fromDate)
+                && Objects.equals(this.toDate, e.toDate);
     }
 }

@@ -56,6 +56,24 @@ public class TaskList {
     }
 
     /**
+     * Checks whether an equivalent task already exists in the list.
+     * Equivalence is defined by Task.equals, which compares logical identity
+     * (type + description [+ dates for Deadline/Event]) and ignores completion status.
+     *
+     * @param task the task to check
+     * @return true if a logically equivalent task is already present
+     */
+    public boolean contains(Task task) {
+        assert task != null : "Task to check must not be null";
+        for (Task t : this.tasks) {
+            if (t.equals(task)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
      * Deletes a task from the list at the specified index.
      *
      * @param idx the zero-based index of the task to be deleted
