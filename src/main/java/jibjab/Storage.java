@@ -33,6 +33,9 @@ public class Storage {
      */
     public void saveTasks(TaskList tasks) throws JibJabException {
         assert tasks != null : "TaskList to save must not be null";
+        if (tasks.isEmpty()) {
+            return;
+        }
         File file = new File(this.filePath);
         File parent = file.getParentFile();
         if (parent != null && !parent.exists()) {
@@ -41,9 +44,7 @@ public class Storage {
             }
         }
         try (PrintWriter pw = new PrintWriter(this.filePath)) {
-            // Even if the task list is empty, we still write (nothing) to truncate the file
-            // so that deletions down to zero tasks are reflected on disk.
-            pw.print(tasks.isEmpty() ? "" : tasks.toString());
+            pw.print(tasks);
         } catch (FileNotFoundException e) {
             throw new JibJabException("Data file not found: " + file.getPath());
         }
