@@ -50,7 +50,10 @@ public class JibJab {
                 out.append(ui.showTaskAdded(todo, tasks.getSize()));
                 break;
             case "deadline":
-                String[] deadlineDetails = Parser.parseDeadline(command[1]);
+                String[] deadlineDetails = Parser.parseDeadline(command.length > 1 ? command[1] : "");
+                if (deadlineDetails.length < 2) {
+                    throw new JibJabException("Please provide a description and a /by date/time.");
+                }
                 Deadline deadline = new Deadline(deadlineDetails[0], deadlineDetails[1]);
                 if (tasks.contains(deadline)) {
                     throw new JibJabException("This task already exists in your list!");
@@ -59,7 +62,10 @@ public class JibJab {
                 out.append(ui.showTaskAdded(deadline, tasks.getSize()));
                 break;
             case "event":
-                String[] eventDetails = Parser.parseEvent(command[1]);
+                String[] eventDetails = Parser.parseEvent(command.length > 1 ? command[1] : "");
+                if (eventDetails.length < 3) {
+                    throw new JibJabException("Please provide a description, /from, and /to date/time.");
+                }
                 Event event = new Event(eventDetails[0], eventDetails[1], eventDetails[2]);
                 if (tasks.contains(event)) {
                     throw new JibJabException("This task already exists in your list!");
@@ -71,7 +77,10 @@ public class JibJab {
                 out.append(tasks.toString());
                 break;
             case "find":
-                String keyword = command[1];
+                if (command.length < 2 || command[1].isBlank()) {
+                    throw new JibJabException("Please provide a keyword to find.");
+                }
+                String keyword = command[1].trim();
                 out.append("Here are the matching tasks in your list:\n");
                 out.append(tasks.findTasks(keyword));
                 break;
@@ -93,6 +102,10 @@ public class JibJab {
             return out.toString();
         } catch (JibJabException e) {
             return e.getMessage();
+        } catch (Exception e) {
+            // Fallback for unexpected errors like invalid date formats
+            String msg = e.getMessage();
+            return (msg == null || msg.isBlank()) ? "Something went wrong processing your command." : msg;
         }
     }
 }

@@ -33,15 +33,22 @@ public class Event extends Task {
      */
     public Event(String description, String from, String toDate) {
         super(description);
-
-        assert from != null && !from.isBlank() : "Event 'from' must not be null/blank";
-        assert toDate != null && !toDate.isBlank() : "Event 'to' must not be null/blank";
-
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(INPUT_PATTERN);
-        this.fromDate = LocalDateTime.parse(from, formatter);
-        this.toDate = LocalDateTime.parse(toDate, formatter);
-
-        assert !this.toDate.isBefore(this.fromDate) : "Event 'to' must be on/after 'from'";
+        if (from == null || from.isBlank()) {
+            throw new IllegalArgumentException("Event start date/time must not be empty");
+        }
+        if (toDate == null || toDate.isBlank()) {
+            throw new IllegalArgumentException("Event end date/time must not be empty");
+        }
+        try {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern(INPUT_PATTERN);
+            this.fromDate = LocalDateTime.parse(from.trim(), formatter);
+            this.toDate = LocalDateTime.parse(toDate.trim(), formatter);
+        } catch (Exception e) {
+            throw new IllegalArgumentException("Invalid date/time for event. Use 'dd/MM/yyyy HH:mm' or 'MMM dd yyyy HH:mm'");
+        }
+        if (!this.toDate.isAfter(this.fromDate)) {
+            throw new IllegalArgumentException("Event end must be after start");
+        }
     }
 
     /**

@@ -66,14 +66,20 @@ public class Storage {
         try (Scanner sc = new Scanner(file)) {
             while (sc.hasNextLine()) {
                 String line = sc.nextLine();
-                assert line != null && line.length() >= 7 : "Stored line must be at least 7 chars";
-                String taskType = Character.toString(line.charAt(1));
-                String taskStatus = Character.toString(line.charAt(4));
-                String taskDesc = line.substring(7);
+                if (line == null || line.length() < 7) {
+                    continue; // skip malformed line
+                }
+                try {
+                    String taskType = Character.toString(line.charAt(1));
+                    String taskStatus = Character.toString(line.charAt(4));
+                    String taskDesc = line.substring(7);
 
-                Task parsed = parseTask(taskType, taskStatus, taskDesc);
-                if (parsed != null) {
-                    tasks.add(parsed);
+                    Task parsed = parseTask(taskType, taskStatus, taskDesc);
+                    if (parsed != null) {
+                        tasks.add(parsed);
+                    }
+                } catch (Exception ex) {
+                    // skip malformed line
                 }
             }
         } catch (IOException e) {

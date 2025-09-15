@@ -31,13 +31,15 @@ public class Deadline extends Task {
      */
     public Deadline(String description, String deadline) {
         super(description);
-
-        assert deadline != null && !deadline.isBlank() : "Deadline string must not be null/blank";
-
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(INPUT_PATTERN);
-        this.deadline = LocalDateTime.parse(deadline, formatter);
-
-        assert this.deadline != null : "Parsed deadline must not be null";
+        if (deadline == null || deadline.isBlank()) {
+            throw new IllegalArgumentException("Deadline date/time must not be empty");
+        }
+        try {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern(INPUT_PATTERN);
+            this.deadline = LocalDateTime.parse(deadline.trim(), formatter);
+        } catch (Exception e) {
+            throw new IllegalArgumentException("Invalid date/time for deadline. Use 'dd/MM/yyyy HH:mm' or 'MMM dd yyyy HH:mm'");
+        }
     }
 
     /**
