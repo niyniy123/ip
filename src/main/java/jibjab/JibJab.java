@@ -47,6 +47,7 @@ public class JibJab {
                     throw new JibJabException("This task already exists in your list!");
                 }
                 tasks.addTask(todo);
+                storage.saveTasks(tasks);
                 out.append(ui.showTaskAdded(todo, tasks.getSize()));
                 break;
             case "deadline":
@@ -59,6 +60,7 @@ public class JibJab {
                     throw new JibJabException("This task already exists in your list!");
                 }
                 tasks.addTask(deadline);
+                storage.saveTasks(tasks);
                 out.append(ui.showTaskAdded(deadline, tasks.getSize()));
                 break;
             case "event":
@@ -71,6 +73,7 @@ public class JibJab {
                     throw new JibJabException("This task already exists in your list!");
                 }
                 tasks.addTask(event);
+                storage.saveTasks(tasks);
                 out.append(ui.showTaskAdded(event, tasks.getSize()));
                 break;
             case "list":
@@ -86,14 +89,17 @@ public class JibJab {
                 break;
             case "mark":
                 Task marked = tasks.markTaskAsDone(Parser.parseIndex(input, tasks.getSize()));
+                storage.saveTasks(tasks);
                 out.append(ui.showTaskMarked(marked));
                 break;
             case "unmark":
                 Task unmarked = tasks.markTaskAsNotDone(Parser.parseIndex(input, tasks.getSize()));
+                storage.saveTasks(tasks);
                 out.append(ui.showTaskUnmarked(unmarked));
                 break;
             case "delete":
                 Task removed = tasks.deleteTask(Parser.parseIndex(input, tasks.getSize()));
+                storage.saveTasks(tasks);
                 out.append(ui.showTaskDeleted(removed, tasks.getSize()));
                 break;
             default:
