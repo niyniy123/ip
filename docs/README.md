@@ -58,7 +58,7 @@ JibJab is a simple task‑tracking chatbot that lets you manage ToDos, Deadlines
 - Type commands into the input box at the bottom; press Enter to submit.
 - Responses appear in the chat pane. The `bye` command will close the window.
 
-![GUI](docs/Ui.png)
+![GUI](Ui.png)
 
 ## Storage
 - File location: `data/jibjab.txt` (created automatically on first run).
