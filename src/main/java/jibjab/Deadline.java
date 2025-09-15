@@ -38,7 +38,8 @@ public class Deadline extends Task {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern(INPUT_PATTERN);
             this.deadline = LocalDateTime.parse(deadline.trim(), formatter);
         } catch (Exception e) {
-            throw new IllegalArgumentException("Invalid date/time for deadline. Use 'dd/MM/yyyy HH:mm' or 'MMM dd yyyy HH:mm'");
+            throw new IllegalArgumentException("Invalid date/time for deadline. "
+                    + "Use 'dd/MM/yyyy HH:mm' or 'MMM dd yyyy HH:mm'");
         }
     }
 

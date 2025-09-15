@@ -44,7 +44,8 @@ public class Event extends Task {
             this.fromDate = LocalDateTime.parse(from.trim(), formatter);
             this.toDate = LocalDateTime.parse(toDate.trim(), formatter);
         } catch (Exception e) {
-            throw new IllegalArgumentException("Invalid date/time for event. Use 'dd/MM/yyyy HH:mm' or 'MMM dd yyyy HH:mm'");
+            throw new IllegalArgumentException("Invalid date/time for event. "
+                    + "Use 'dd/MM/yyyy HH:mm' or 'MMM dd yyyy HH:mm'");
         }
         if (!this.toDate.isAfter(this.fromDate)) {
             throw new IllegalArgumentException("Event end must be after start");
